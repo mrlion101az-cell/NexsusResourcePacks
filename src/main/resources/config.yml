@@ -1,0 +1,54 @@
+# NexusResourcePacks -- delivery layer for one or more Java resource packs.
+# Resource Pack Manager (RPM/RSPM) can still do all the merging for your
+# main pack; set its own config.yml `autoHost: false` so it writes the
+# merged zip to plugins/ResourcePackManager/output/ instead of hosting or
+# pushing it itself. This plugin hosts and delivers from there -- and can
+# also host any number of OTHER standalone pack zips alongside it, letting
+# players pick which one (if any) they want with /resourcepack.
+
+# Every pack players can choose between. Add a new one by adding a new
+# entry here (any id you like, lowercase/no-spaces is safest) and running
+# /resourcepack reload -- no restart, no code changes. Remove one the same
+# way; anyone who had it selected falls back to defaults.default-pack-id
+# (or nothing) the next time it's applied.
+packs:
+  nexus:
+    display-name: "Nexus (main pack)"
+    # Where RPM writes its merged pack once autoHost is false. Adjust the
+    # relative path if your plugins folder layout differs -- this (and
+    # every other source-file below) is relative to plugins/NexusResourcePacks/.
+    source-file: "../ResourcePackManager/output/ResourcePackManager.zip"
+  # medieval:
+  #   display-name: "Medieval Overhaul"
+  #   source-file: "packs/medieval.zip"
+  # halloween:
+  #   display-name: "Halloween Event Pack"
+  #   source-file: "packs/halloween.zip"
+
+hosting:
+  # How this plugin's own small built-in file server is reachable from
+  # players' clients. In production, put a domain + reverse proxy in front
+  # of it (recommended -- that's also the easy way to add HTTPS); otherwise
+  # use your server's public IP. No trailing slash.
+  public-base-url: "http://YOUR_SERVER_IP:8091"
+  http-port: 8091
+  # How often (minutes) to check every configured pack's source file for a
+  # new version and re-hash/re-host it automatically. Doesn't interrupt
+  # anyone already connected -- they only get the update the next time the
+  # pack is (re)sent to them.
+  rehash-interval-minutes: 5
+
+prompt:
+  # Shown on the client's own download-confirmation dialog when a pack is sent.
+  message: "Nexus Universe has resource packs available! Pick one with /resourcepack, or play with default textures."
+  # Keep this false -- required packs force a kick if declined/failed, which
+  # defeats the whole point of a pick-one-or-none menu.
+  required: false
+
+defaults:
+  # Which pack id (must match one of the ids under packs: above) a player
+  # with no recorded choice yet gets sent on their very first join. Leave
+  # blank, or set to "none", to send nothing until they visit /resourcepack
+  # themselves. Existing choices (once someone has picked something, in
+  # either direction) always override this.
+  default-pack-id: "nexus"

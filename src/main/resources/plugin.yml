@@ -1,0 +1,17 @@
+name: NexusResourcePacks
+version: ${project.version}
+main: com.nexusuniverse.resourcepacks.NexusResourcePacksPlugin
+api-version: '1.21'
+author: Nexus Universe
+description: A PickPack-style /resourcepack menu for Java players to choose between any number of configured resource packs (or none). Takes over hosting and delivery for packs Resource Pack Manager merges (RPM keeps merging; set its autoHost to false and this plugin does the rest) plus any other standalone pack zips you add, since vanilla Java can't reliably show its native prompt on every join once a player has a remembered per-server preference.
+
+commands:
+  resourcepack:
+    description: Open the Nexus resource pack picker, or select/list/reload directly.
+    aliases: [nexuspack, rp]
+    usage: /resourcepack [select <id|none>|list|reload]
+
+permissions:
+  nexusresourcepacks.admin:
+    description: Reload NexusResourcePacks and force an immediate re-hash of the hosted pack.
+    default: op
